@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bharat Navy AI · Maritime Forensic Platform</title>
+<link rel="stylesheet" href="css/style.css"></head><body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="flag"><i></i><i></i><i></i></div>
+<div class="util"><span>Prototype for Smart India Hackathon 2026. This is not an official Government of India website, and all vessel and surveillance data is simulated.</span><span><button data-fs="-1" aria-label="Decrease text size">A−</button><button data-fs="0" aria-label="Default text size">A</button><button data-fs="1" aria-label="Increase text size">A+</button></span></div>
+<header class="top">
+<svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true"><circle cx="27" cy="27" r="25" fill="#fff" stroke="#ff9933" stroke-width="3"/><g fill="none" stroke="#0b2a5b" stroke-width="3" stroke-linecap="round"><circle cx="27" cy="13" r="3.5"/><path d="M27 17v22M20 22h14M12 31c1 8 7 11 15 11s14-3 15-11M12 31l-3 3M42 31l3 3"/></g></svg>
+<div class="ttl"><h1>Bharat Navy AI</h1><p>Maritime Forensic Platform · भारत नेवी एआई · समुद्री फोरेंसिक मंच</p></div>
+<div class="stat"><b>System online</b><div id="clk" style="margin-top:4px"></div></div>
+</header>
+<nav aria-label="Primary"><a href="#main">Dashboard</a><a href="#detect">Detection</a><a href="#drift">Drift and origin</a><a href="#vessels">Vessel evidence</a><a href="#report">Investigation report</a></nav>
+
+<main class="wrap" id="main">
+<p style="margin:0 0 12px"><b>Case BNAI/DEMO-001:</b> simulated oil release in the Arabian Sea off Mumbai. The basemap is real satellite imagery; the slick, drift speed (1.6 kn, as in the MSC ELSA 3 case), AIS tracks and CSN/VTS feeds are simulated.</p>
+<div class="kpis">
+<div class="kpi"><b>25 km²</b><span>Slick area at satellite pass (SAR + EO, illustrative)</span></div>
+<div class="kpi"><b>±4 nm</b><span>Origin uncertainty, release window T−8 h to T−4 h</span></div>
+<div class="kpi"><b>5 candidates</b><span>Ranked from fused AIS, CSN and VTS tracks</span></div>
+<div class="kpi"><b>0.876</b><span>Best validation IoU, U-Net prototype</span></div>
+</div>
+
+<div class="main">
+<div>
+<section class="panel" id="drift"><h2>Operational picture: Mumbai coast, Arabian Sea</h2><div class="pb">
+<div class="lay" role="group" aria-label="Map layers"><label><input type="checkbox" data-l="slick" checked>Oil slick</label><label><input type="checkbox" data-l="parts" checked>Drift particles</label><label><input type="checkbox" data-l="hind" checked>Hindcast and origin</label><label><input type="checkbox" data-l="fore" checked>Forecast</label><label><input type="checkbox" data-l="vess" checked>Vessels and tracks</label></div>
+<svg class="map" id="map" viewBox="0 0 900 518" role="img" aria-label="Satellite image of the Mumbai coast showing the oil slick, hindcast origin, forecast and vessel tracks"></svg>
+<div class="tl"><label for="t"><b>Time from satellite pass</b></label><input id="t" type="range" min="-12" max="24" step="1" value="0"><b id="tv" style="min-width:60px"></b></div>
+<div class="ro" id="ro"></div>
+<div class="legend"><span><i style="border-color:#f5c542"></i>Observed slick</span><span><i style="border-color:#ff5a4d;border-top-style:dashed"></i>Hindcast</span><span><i style="border-color:#4fd1ff;border-top-style:dashed"></i>Forecast (+3, +6, +12 h)</span><span><i style="border-color:#ffb347;border-top-style:dashed"></i>Track recovered from CSN/VTS</span></div>
+<div class="note">The basemap is the satellite image you supplied. Overlay positions are simulated and geo-referenced approximately from the image scale bar. In the Leaflet frontend, the same overlays can sit on a live imagery tile layer.</div>
+</div></section>
+<section class="panel" id="vessels"><h2>Vessel evidence: candidate ranking</h2><div class="pb sc"><table><thead><tr><th>Rank</th><th>Vessel</th><th>Closest approach</th><th>Track quality</th><th>Spatial</th><th>Temporal</th><th>Counterfactual</th><th>Consistency</th></tr></thead><tbody id="tb"></tbody></table>
+<p class="tag" style="margin:8px 0 0">Select a row to highlight the vessel on the map. Consistency = 0.35 × spatial + 0.25 × temporal + 0.40 × counterfactual drift match. It indicates agreement with the spill and is not legal attribution.</p></div></section>
+</div>
+
+<div>
+<section class="panel"><h2>Analysis pipeline</h2><div class="pb"><ol class="st" id="st"></ol><button class="btn" id="run" style="margin-top:8px">Re-run analysis</button></div></section>
+<section class="panel" id="detect"><h2>Slick detection (simulated scene)</h2><div class="pb">
+<div class="seg" role="group" aria-label="Image mode"><button aria-pressed="true" data-m="sar">SAR</button><button aria-pressed="false" data-m="eo">EO</button><button aria-pressed="false" data-m="mask">Mask</button></div>
+<canvas id="cv" width="320" height="220" role="img" aria-label="Simulated satellite scene with detected slick"></canvas>
+<p class="tag" style="margin:8px 0 0">Reliability score 94%, so SAR-first processing was used. Dual-encoder U-Net fuses SAR and EO to reduce look-alikes such as wind slicks.</p></div></section>
+</div>
+</div>
+
+<section class="panel rep" id="report"><h2>Investigation report</h2><div class="pb"><pre id="rp"></pre></div></section>
+</main>
+<footer><div><a href="#main">Dashboard</a><a href="#report">Report</a><a href="#">Accessibility statement</a><a href="#">Terms of use</a></div><p>Problem Statement 26143 · Oil Spill Detection and Responsible Vessel Identification Using Satellite + AIS · Theme: Disaster Management · Team STARK X (ID 156633)</p></footer>
+
+<script src="js/app.js"></script></body></html>
